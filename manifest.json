@@ -1,0 +1,15 @@
+{
+	"name": "LinkedIn",
+  "short_name": "LinkedIn",
+	"version": "1.0.2",
+	"description": "Makes unsightly websites pretty in one click. Saves your eyesight. Monitors for best rules of web typography.",
+	"permissions": [
+		"activeTab",
+    "https://www.linkedin.com/*"
+    ],
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'", 
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+	"manifest_version": 2
+}
