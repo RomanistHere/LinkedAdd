@@ -1,6 +1,6 @@
 {
-	"name": "LinkedIn",
-  "short_name": "LinkedIn - Automatization",
+	"name": "LinkedAdd - Add people automatically",
+  "short_name": "LinkedAdd",
 	"version": "0.0.2",
 	"description": "Automatically adds all results from search to your network",
 	"permissions": [
