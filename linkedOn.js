@@ -1,34 +1,84 @@
 'use strict';
 
-var enabled = true;
+var enabled = true
+var canReturn
+watchPopUp()
 
 function run() {
-    // console.log(enabled)
     if (!enabled) return false
 
-    // let elements = document.querySelectorAll(".search-result__action-button")
+    let searchResults = document.querySelectorAll('.search-result__occluded-item')
 
-    // for (let i=0; i < elements.length; i++) {
+    async function asyncForEach(array, callback) {
+        for (let index = 0; index < array.length; index++) {
+            await callback(array[index], index, array);
+        }
+    }
 
-    //     let element = elements[i]
+    let disabled = false
 
-    //     element.click()
+    const start = async () => {
+        await asyncForEach(searchResults, async (item) => {
+            if (disabled) return
+            let fullName = item.querySelector('.actor-name').textContent
+            let name = fullName.split(' ')[0]
+            let surname = fullName.split(' ')[1]
 
-    //     if (document.querySelector('.artdeco-button--3.ml1')) {
-    //         document.querySelector('.artdeco-button--3.ml1').click()
-    //         setTimeout(function() {
-    //             document.querySelector('.artdeco-button--3.ml1').click()
-    //             document.querySelector('.artdeco-pagination__button--next').click()
-    //         }, 1000);
-    //     }
-        
-    // }
+            console.log(name)
 
-    // document.querySelector('.artdeco-pagination__button--next').click()
-    console.log('uploaded')
+            let button = item.querySelector('.search-result__action-button')
+            let textButton = button.textContent.trimStart().trimEnd()
+            if (textButton == 'Connect') {
+                button.click()
+                await connectWithMessage()
+                document.querySelector('.artdeco-button--3.mr1').click()
+                document.querySelector('.send-invite__custom-message').value = 'Hello ' + name + '! I would like to have you in my network, thank you and have a nice day!'
+                document.querySelector('.artdeco-button--3.ml1').click()
+            }
+
+            disabled = true
+        })
+    }
+
+    start()
 }
 
-observeSearchCont()
+async function connectWithMessage() {
+    canReturn = false
+    watchPopUp()
+    const freeze = m => new Promise(r => setTimeout(r, m))
+
+    async function canWeReturn() {
+        if (!canReturn) {
+            console.log('POPUP CHANGED - BEFORE')
+            await freeze(200)
+            await canWeReturn()
+        }
+        else {
+            console.log('POPUP CHANGED - AFTER')
+            await freeze(200)
+            return
+        }
+    }
+
+    await canWeReturn()
+    return
+}
+
+function watchPopUp () {
+    let popUp = document.getElementById('li-modal-container')    
+
+    let dom_observer = new MutationObserver(function(mutation) {
+        console.log('POPUP CHANGED')
+        canReturn = true
+        dom_observer.disconnect()
+    })
+
+    dom_observer.observe(popUp, {
+        attributeOldValue: true,
+        childList: true,
+    })
+}
 
 function observeSearchCont() {
     let searchCont = document.querySelector('.authentication-outlet').children[0]
@@ -49,3 +99,5 @@ function observeSearchCont() {
 
     run()
 }
+
+observeSearchCont()
