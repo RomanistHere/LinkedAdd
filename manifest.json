@@ -1,8 +1,8 @@
 {
 	"name": "LinkedAdd - Add people automatically",
   "short_name": "LinkedAdd",
-	"version": "0.0.2",
-	"description": "Automatically adds all results from search to your network",
+	"version": "1.0.0",
+	"description": "Automatically adds all results from search to your network with custom note or without it.",
 	"permissions": [
 		"activeTab",
     "https://www.linkedin.com/*"
